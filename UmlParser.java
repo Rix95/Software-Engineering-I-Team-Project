@@ -1,10 +1,10 @@
 import LanguageObjects.JavaObject;
 import LanguageObjects.LanguageObject;
+import LanguageObjects.PythonObject;
 import UmlObject.UmlObject;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class UmlParser {
     String languageChoice;
@@ -13,6 +13,7 @@ public class UmlParser {
     LanguageObject[] languageObjectArray;
 
     public UmlParser(String inputUml, String languageChoice){
+        this.languageChoice = languageChoice;
 
         //TODO
     }
@@ -37,9 +38,13 @@ public class UmlParser {
     public Object[] decodeLanguageObject(UmlObject[] umlObjectArray, String languageChoice){
         List<LanguageObject> languageObjectList = new ArrayList<>();
         for(UmlObject umlObject : umlObjectArray){
-        if (languageChoice.equals(languageChoice.toLowerCase())){
-            languageObjectList.add(new JavaObject(umlObject));
-        }}
+            if (languageChoice.toLowerCase().equals("java")){
+                languageObjectList.add(new JavaObject(umlObject));
+            }
+            else if(languageChoice.toLowerCase().equals("python")){
+                //languageObjectList.add(new PythonObject(umlObject));
+            }
+        }
 
         return null;
     }
