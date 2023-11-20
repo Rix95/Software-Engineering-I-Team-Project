@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class UmlParserTest {
     String testString = "" +
-            "''TestyTest" +
+            "''TestyTest\n" +
             "class BattleshipGame {\n" +
             "    - inputboard : ArrayList<ArrayList>\n" +
             "    \n" +
