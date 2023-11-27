@@ -7,13 +7,13 @@ import java.util.Map;
 //TODO Need to detect comments, class name, variables, methods, return type, access modifier, constructor, etc..
 public class UmlObject {
 
-    String objectType;
-    ArrayList<String> umlObjectList;
-    ArrayList<String> localClassStringArrayList;
+    public String objectType;
+    public ArrayList<String> umlObjectList;
+    public ArrayList<String> localClassStringArrayList;
     public UmlObject(ArrayList<String> classStringArrayList, String type){
 
         this.localClassStringArrayList = classStringArrayList;
-
+        //System.out.println(localClassStringArrayList);
         //This will handle comments outside the class
         if (type.equals("outer-comment")){
             objectType = "outer-comment";
@@ -47,9 +47,40 @@ public class UmlObject {
 
         return desiredOutput;
     }
+    public Map<String, Object> parseClass(String line){
+        //check if its a comment
+        //if not it should be a method or attribute
+        //split by :
 
-    public Map<String, Object> parseComment (String comment) {
-        String[] commentWithoutBacklash = comment.split("\\\\");
+
+
+        //TODO This should be comment
+        if (line.startsWith("''")){
+            return parseComment(line);
+        }
+        //TODO constructor (wont be implemented in second sprint)
+        else if (line.startsWith("<<")){
+            return parseConstructor(line);
+        }
+        //TODO Attribute & Method
+        else {
+            String[] sections = line.split(":");
+            char lastCharacter = sections[0].charAt(-1);
+
+            //Method
+
+            if (lastCharacter == ')'){
+                return parseMethod(sections);
+            }
+            //Attribute
+            else {
+                return parseAttribute(sections);
+            }
+        }
+    }
+
+    public Map<String, Object> parseComment (String line) {
+        String[] commentWithoutBacklash = line.split("''");
         Map<String, Object> localComment = new HashMap<>();
         localComment.put("comment", commentWithoutBacklash[1]);
 
@@ -58,23 +89,29 @@ public class UmlObject {
 
     }
 
-
-    public Map<String, Object> parseClass(String line){
-        //check if its a comment
-        //if not it should be a method or attribute
-        //split by :
-        //TODO constructor (wont be implemented in second sprint)
-
-
-        }
+    public Map<String, Object> parseAttribute (String[] dividedLine) {
 
 
 
+        return null;
 
-        return localArrayList;
+
+    }
+    public Map<String, Object> parseMethod (String[] dividedLine) {
+
+
+        return null ;
+    }
+
+    public Map<String, Object> parseConstructor (String line) {
+
+
+        return null;
+    }
+
     }
 
 
 
-    return umlObjectList
-}
+
+
