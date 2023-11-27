@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 public class JavaObject extends LanguageObject {
-    public ArrayList<String> desiredResult;
+    public ArrayList<String> decodedEntity;
 
     public JavaObject(UmlObject umlObject) {
 
@@ -14,12 +14,12 @@ public class JavaObject extends LanguageObject {
         //TODO SKipping for testing purposes
         decodeUmlObject();
         //TODO IN PROGRESS
-        desiredResult = decodeClass();
+        decodedEntity = decodeClass();
     }
 
     public void decodeUmlObject(){
         for (Map<String, Object> stringObjectMap : super.umlObject.parsedObjectArrayList) {
-            System.out.println(stringObjectMap);
+            //System.out.println(stringObjectMap);
         }
     }
     public ArrayList decodeClass(){
@@ -42,10 +42,13 @@ public class JavaObject extends LanguageObject {
                 else if (key.equals("comment")){
                     classElements.add(decodeComment(umlObject.parsedObjectArrayList.get(i).get(key)));
                 }
+
+                else if (key.equals("method")){
+
+                }
             }
         }
-
-        //ADD END
+        //ADD CLOSURE BRACKET
         classElements.add("}");
         System.out.println(classElements.toString());
         //StringBuilder classBuilt = new StringBuilder();
@@ -55,10 +58,6 @@ public class JavaObject extends LanguageObject {
     }
 
     public String decodeComment(Object comment){
-
-
-
-
         return String.valueOf(new StringBuilder("//" + comment.toString()));
     }
 
@@ -85,8 +84,8 @@ public class JavaObject extends LanguageObject {
         return String.valueOf(attributeLine);
     }
 
-    public ArrayList<String> getDesiredResult(){
-        return desiredResult;
+    public ArrayList<String> getParsedEntity(){
+        return decodedEntity;
     }
 
 

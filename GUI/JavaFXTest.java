@@ -31,8 +31,8 @@ public class JavaFXTest extends Application {
         filePathLabel.setPadding(new Insets(20));
 
         //TODO FOR TESTING PURPOSES
-        outputTextArea.setEditable(false);
-        outputTextArea.setText("test");
+         outputTextArea.setEditable(false);
+//
         //TODO END
 
         // Setting for the textArea and GridPane
@@ -142,7 +142,7 @@ public class JavaFXTest extends Application {
     }
     private void generateCode() {
         UmlParser umlParser = new UmlParser(inputTextArea.getText(), "java");
-        outputTextArea.setText(umlParser.endGame());
+        outputTextArea.setText(umlParser.parseCodeIntoString());
 
 
     }

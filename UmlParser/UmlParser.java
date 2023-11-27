@@ -22,7 +22,7 @@ public class UmlParser {
         //TODO RIGHT NOW JAVA IS ALWAYYS SELECTED
         languageObjectList = parseUmlObject(umlObjectList, "java");
         System.out.println("///");
-        System.out.println(endGame());
+        System.out.println(parseCodeIntoString());
         System.out.println("///");
 
 //        for (UmlObject umltest : umlObjectArray){
@@ -144,13 +144,14 @@ public class UmlParser {
     }
 
     //TODO Cheesy name wont be in prod.. i promise
-    public String endGame() {
+    public String parseCodeIntoString() {
         StringBuilder builderTest = new StringBuilder();
 
         for(LanguageObject languageObject : languageObjectList){
-            JavaObject actualLanguage = (JavaObject) languageObject;
+
+            //JavaObject actualLanguage = (JavaObject) languageObject;
             //System.out.println("hello" + actualLanguage.getDesiredResult().toString());
-            String temp = String.join("\n", actualLanguage.getDesiredResult());
+            String temp = String.join("\n", languageObject.getParsedEntity());
             builderTest.append(temp + "\n");
         }
 

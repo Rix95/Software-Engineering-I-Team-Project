@@ -9,13 +9,12 @@ import java.util.Map;
 public class UmlObject {
 
     public String objectType;
-    //public ArrayList<String> umlObjectList; TO BE DELETED
     public ArrayList<String> localClassStringArrayList;
     public ArrayList<Map<String, Object>> parsedObjectArrayList;
     public UmlObject(ArrayList<String> classStringArrayList, String type){
 
         this.localClassStringArrayList = classStringArrayList;
-        //System.out.println(localClassStringArrayList);
+
         //This will handle comments outside the class
         if (type.equals("outer-comment")){
             objectType = "outer-comment";
@@ -73,7 +72,7 @@ public class UmlObject {
         //TODO Attribute & Method
         else {
             String[] sections = line.split(":");
-            System.out.println(Arrays.toString(sections));
+            //System.out.println(Arrays.toString(sections));
             char lastCharacter = sections[0].charAt(sections[0].length() -1);
 
             //Method
