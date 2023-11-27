@@ -14,7 +14,8 @@ import java.util.List;
 
 public class JavaFXTest extends Application {
 
-    private TextArea textArea;
+    private TextArea textAreaLeft;
+    private TextArea textAreaRight;
     private Label filePathLabel;
     private File selectedFile;
 
@@ -22,17 +23,36 @@ public class JavaFXTest extends Application {
     public void start(Stage primaryStage) {
 
         primaryStage.setTitle("UML To Source Code");
-        textArea = new TextArea();
+        textAreaLeft = new TextArea();
+        textAreaRight = new TextArea();
         filePathLabel = new Label();
         filePathLabel.setText("Selected File: ");
-        filePathLabel.setPadding(new Insets(20, 20, 20, 20));
+        filePathLabel.setPadding(new Insets(20));
+
+        // Setting for the textArea and GridPane
+        GridPane grid = new GridPane();
+        Label input = new Label();
+        Label output = new Label();
+        input.setText("Input");
+        output.setText("Output");
+        grid.setMaxSize(800,800);
+        grid.setVgap(20);
+        grid.setAlignment(Pos.CENTER);
+        grid.setHgap(20);
+        grid.add(input, 0, 0);
+        grid.add(output, 1, 0);
+        grid.add(textAreaLeft,0,1);
+        grid.add(textAreaRight,1,1);
+        textAreaLeft.setPrefSize(350, 400);
+        textAreaRight.setPrefSize(350, 400);
 
         // Create a FileChooser
         FileChooser fileChooser = new FileChooser();
-        VBox left = new VBox(10);
+        grid.add(filePathLabel, 0, 4, 2, 1);
 
         // Radio buttons for JAVA and PYTHON in hbox
         HBox radio = new HBox();
+        radio.setSpacing(50);
 
         // New togglegroup for the radio buttons so only one can be selected
         ToggleGroup radioButtons = new ToggleGroup();
@@ -43,48 +63,50 @@ public class JavaFXTest extends Application {
 
         // Adding radio buttons to the left side of the GUI
         radio.getChildren().addAll(python, java);
-        left.setPadding(new Insets(20));
-        radio.setAlignment(Pos.BASELINE_LEFT);
+        radio.setAlignment(Pos.CENTER);
+        grid.add(radio, 0, 3, 2, 1);
 
         // Buttons for Saving and Running Program
-        Button generate = new Button();
-        Button save = new Button();
-        generate.setText("Load");
-        generate.setOnAction(e -> {
-            loadFile();
-        });
-        save.setText("Save");
+        Button load = new Button("Load");
+        Button save = new Button("Save");
+        Button generate = new Button("Generate");
+        Button openButton = new Button("Select UML file (.txt)");
+
+        // Settings for buttons colors and background
+        openButton.setTextFill(Paint.valueOf("White"));
+        openButton.setBackground(Background.fill(Paint.valueOf("Purple")));
         generate.setTextFill(Paint.valueOf("White"));
-        generate.setBackground(Background.fill(Paint.valueOf("Blue")));
+        generate.setBackground(Background.fill(Paint.valueOf("Green")));
         save.setTextFill(Paint.valueOf("White"));
         save.setBackground(Background.fill((Paint.valueOf("Red"))));
-        HBox buttons = new HBox();
-        buttons.setAlignment(Pos.BOTTOM_LEFT);
-        buttons.getChildren().addAll(generate, save);
+        load.setTextFill(Paint.valueOf("White"));
+        load.setBackground(Background.fill(Paint.valueOf("Blue")));
+
+        // Show the file dialog when Open button is clicked
+        openButton.setOnAction(e -> {
+            openFile();
+        });
+
+        // display text file in input when load button pressed
+        load.setOnAction(e -> {
+            loadFile();
+        });
 
         // Set extension filters
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Text files (*.txt)", "*.txt");
         fileChooser.getExtensionFilters().add(extFilter);
 
-        // boxes to display text files when opened
-        StackPane stack = new StackPane();
-        stack.setMaxSize(300, 350);
-        stack.setAlignment(Pos.BASELINE_RIGHT);
-        stack.getChildren().add(textArea);
 
-        // Show the file dialog when a button is clicked
-        javafx.scene.control.Button openButton = new javafx.scene.control.Button("Select UML file (.txt)");
-        openButton.setOnAction(e -> {
-            openFile();
-        });
-
-        // adding the component that are on the left side of the GUI
-        left.getChildren().addAll(filePathLabel, radio, openButton, buttons);
+        // horizontal box for the save generate and open file buttons
+        HBox buttons = new HBox();
+        buttons.getChildren().addAll(openButton, load, generate, save);
+        buttons.setSpacing(50);
+        grid.add(buttons, 0, 5, 2, 1);
 
         // adding components to the main node
-        javafx.scene.layout.StackPane root = new javafx.scene.layout.StackPane();
-        root.getChildren().addAll(left, stack);
-        primaryStage.setScene(new javafx.scene.Scene(root,600,500));
+        StackPane root = new StackPane();
+        root.getChildren().add(grid);
+        primaryStage.setScene(new javafx.scene.Scene(root,800,800));
         primaryStage.show();
 }
     // When the load button is pressed this method will be
@@ -97,24 +119,23 @@ public class JavaFXTest extends Application {
                 for (String line : lines) {
                     content.append(line).append("\n");
                 }
-                textArea.setText(content.toString());
-                filePathLabel.setText(selectedFile.getAbsolutePath());
+                textAreaLeft.setText(content.toString());
+                filePathLabel.setText("Selected File: " + selectedFile.getAbsolutePath());
 
             } catch (Exception e) {
                 e.printStackTrace();
-                textArea.setText("Error reading the file.");
+                textAreaLeft.setText("Error reading the file.");
             }
         }
     }
 
     // made this method to display the filepath when the select a file button is pressed
     private void openFile() {
-        // Create a FileChooser
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open File");
         selectedFile = fileChooser.showOpenDialog(null);
         if (selectedFile != null) {
-            filePathLabel.setText(selectedFile.getAbsolutePath());
+            filePathLabel.setText("Selected File: " + selectedFile.getAbsolutePath());
         }
 
     }

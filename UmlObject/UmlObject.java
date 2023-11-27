@@ -110,7 +110,7 @@ public class UmlObject {
         char firstChar = attributeName.charAt(0);
         String modifier;
         if (firstChar == '+'){
-    
+
         }
 
         else if(firstChar == '-') {
