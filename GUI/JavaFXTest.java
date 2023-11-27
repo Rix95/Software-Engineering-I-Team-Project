@@ -5,12 +5,13 @@ import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.paint.Paint;
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
+import javafx.stage.*;
 import javafx.scene.layout.*;
 import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.List;
+import javafx.stage.FileChooser.ExtensionFilter;
 
 public class JavaFXTest extends Application {
 
@@ -25,8 +26,7 @@ public class JavaFXTest extends Application {
         primaryStage.setTitle("UML To Source Code");
         textAreaLeft = new TextArea();
         textAreaRight = new TextArea();
-        filePathLabel = new Label();
-        filePathLabel.setText("Selected File: ");
+        filePathLabel = new Label("Selected File: ");
         filePathLabel.setPadding(new Insets(20));
 
         // Setting for the textArea and GridPane
@@ -93,9 +93,8 @@ public class JavaFXTest extends Application {
         });
 
         // Set extension filters
-        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Text files (*.txt)", "*.txt");
+        ExtensionFilter extFilter = new ExtensionFilter("Text files (*.txt)", "*.txt");
         fileChooser.getExtensionFilters().add(extFilter);
-
 
         // horizontal box for the save generate and open file buttons
         HBox buttons = new HBox();
