@@ -1,4 +1,5 @@
 package GUI;
+import UmlParser.UmlParser;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -14,8 +15,8 @@ import java.util.List;
 
 public class JavaFXTest extends Application {
 
-    private TextArea textAreaLeft;
-    private TextArea textAreaRight;
+    private TextArea inputTextArea;
+    private TextArea outputTextArea;
     private Label filePathLabel;
     private File selectedFile;
 
@@ -23,11 +24,16 @@ public class JavaFXTest extends Application {
     public void start(Stage primaryStage) {
 
         primaryStage.setTitle("UML To Source Code");
-        textAreaLeft = new TextArea();
-        textAreaRight = new TextArea();
+        inputTextArea = new TextArea();
+        outputTextArea = new TextArea();
         filePathLabel = new Label();
         filePathLabel.setText("Selected File: ");
         filePathLabel.setPadding(new Insets(20));
+
+        //TODO FOR TESTING PURPOSES
+        outputTextArea.setEditable(false);
+        outputTextArea.setText("test");
+        //TODO END
 
         // Setting for the textArea and GridPane
         GridPane grid = new GridPane();
@@ -41,10 +47,10 @@ public class JavaFXTest extends Application {
         grid.setHgap(20);
         grid.add(input, 0, 0);
         grid.add(output, 1, 0);
-        grid.add(textAreaLeft,0,1);
-        grid.add(textAreaRight,1,1);
-        textAreaLeft.setPrefSize(350, 400);
-        textAreaRight.setPrefSize(350, 400);
+        grid.add(inputTextArea,0,1);
+        grid.add(outputTextArea,1,1);
+        inputTextArea.setPrefSize(350, 400);
+        outputTextArea.setPrefSize(350, 400);
 
         // Create a FileChooser
         FileChooser fileChooser = new FileChooser();
@@ -57,6 +63,7 @@ public class JavaFXTest extends Application {
         // New togglegroup for the radio buttons so only one can be selected
         ToggleGroup radioButtons = new ToggleGroup();
         RadioButton python = new RadioButton("Python");
+        python.setDisable(true);
         RadioButton java = new RadioButton("Java");
         python.setToggleGroup(radioButtons);
         java.setToggleGroup(radioButtons);
@@ -69,6 +76,7 @@ public class JavaFXTest extends Application {
         // Buttons for Saving and Running Program
         Button load = new Button("Load");
         Button save = new Button("Save");
+        save.setDisable(true);
         Button generate = new Button("Generate");
         Button openButton = new Button("Select UML file (.txt)");
 
@@ -90,6 +98,10 @@ public class JavaFXTest extends Application {
         // display text file in input when load button pressed
         load.setOnAction(e -> {
             loadFile();
+        });
+
+        generate.setOnAction(e -> {
+            generateCode();
         });
 
         // Set extension filters
@@ -119,15 +131,22 @@ public class JavaFXTest extends Application {
                 for (String line : lines) {
                     content.append(line).append("\n");
                 }
-                textAreaLeft.setText(content.toString());
+                inputTextArea.setText(content.toString());
                 filePathLabel.setText("Selected File: " + selectedFile.getAbsolutePath());
 
             } catch (Exception e) {
                 e.printStackTrace();
-                textAreaLeft.setText("Error reading the file.");
+                inputTextArea.setText("Error reading the file.");
             }
         }
     }
+    private void generateCode() {
+        UmlParser umlParser = new UmlParser(inputTextArea.getText(), "java");
+        outputTextArea.setText(umlParser.endGame());
+
+
+    }
+
 
     // made this method to display the filepath when the select a file button is pressed
     private void openFile() {
@@ -141,5 +160,6 @@ public class JavaFXTest extends Application {
     }
     public static void main(String[] args) {
         launch(args);
+
     }
 }

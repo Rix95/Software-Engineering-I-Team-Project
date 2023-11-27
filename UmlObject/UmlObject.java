@@ -9,8 +9,9 @@ import java.util.Map;
 public class UmlObject {
 
     public String objectType;
-    public ArrayList<String> umlObjectList;
+    //public ArrayList<String> umlObjectList; TO BE DELETED
     public ArrayList<String> localClassStringArrayList;
+    public ArrayList<Map<String, Object>> parsedObjectArrayList;
     public UmlObject(ArrayList<String> classStringArrayList, String type){
 
         this.localClassStringArrayList = classStringArrayList;
@@ -23,6 +24,10 @@ public class UmlObject {
         else if (type.equals("class")) {
             objectType = "class";
         }
+
+        parsedObjectArrayList = parseObject(objectType, classStringArrayList);
+
+
     }
 
     //test = { {comment: comment},{},{},{}}
@@ -31,25 +36,26 @@ public class UmlObject {
         //Might not be used...
         ArrayList<String> localClassString = new ArrayList<String>(localClassStringArrayList);
 
-        ArrayList<Map<String, Object>> desiredOutput = new ArrayList<>();
+        ArrayList<Map<String, Object>> umlParsedObjectArrayList = new ArrayList<>();
         //unique case for outer comments
         if (objectType.equals("outer-comment")) {
 
-            desiredOutput.add(parseComment(localClassString.get(0)));
+            umlParsedObjectArrayList.add(parseComment(localClassString.get(0)));
             ;
         }
         //class general...
         else if (objectType.equals("class")) {
             Map<String, Object> classMap = new HashMap<>();
             classMap.put("className", localClassStringArrayList.get(0));
+            umlParsedObjectArrayList.add(classMap);
             for (int i = 1; i < localClassStringArrayList.size(); i++){
-                desiredOutput.add(parseClass(localClassStringArrayList.get(i)));
+                umlParsedObjectArrayList.add(parseClassItem(localClassStringArrayList.get(i)));
             }
         }
 
-        return desiredOutput;
+        return umlParsedObjectArrayList;
     }
-    public Map<String, Object> parseClass(String line){
+    public Map<String, Object> parseClassItem(String line){
         //check if its a comment
         //if not it should be a method or attribute
         //split by :
@@ -94,11 +100,32 @@ public class UmlObject {
 
     public Map<String, Object> parseAttribute (String[] dividedLine) {
 
+        //Map<String, Map<String, String>> attributeMap = new HashMap<>();
+        Map<String, Object> attributeMap = new HashMap<>();
+        attributeMap.put("attribute", new HashMap<String, String>());
 
 
-        return null;
+        String nameWithModifier = dividedLine[0];
+        String type = dividedLine[1];
 
 
+        //Check modifier add to map
+        String accessModifier = checkModifier(nameWithModifier);
+        Map<String, String> attributeInnerMap = (Map<String, String>)attributeMap.get("attribute");
+        attributeInnerMap.put("accessModifier", accessModifier);
+
+
+        if (accessModifier.equals("default")){
+            attributeInnerMap.put("name", nameWithModifier);
+        }
+        else {
+            String nameWithoutModifier = nameWithModifier.substring(1);
+            attributeInnerMap.put("name", nameWithoutModifier);
+
+        }
+        attributeInnerMap.put("type", type);
+
+        return attributeMap;
     }
     public Map<String, Object> parseMethod (String[] dividedLine) {
 
@@ -108,26 +135,20 @@ public class UmlObject {
 
     public String checkModifier(String attributeName) {
         char firstChar = attributeName.charAt(0);
-        String modifier;
-        if (firstChar == '+'){
 
+        if (firstChar == '+'){
+            return "public";
         }
 
         else if(firstChar == '-') {
+            return "private";
         }
         else if(firstChar == '#') {
-
+            return "protected";
         }
         else {
+            return "default";
         }
-
-        return
-    }
-
-
-
-        return null;
-
     }
 
     public Map<String, Object> parseConstructor (String line) {

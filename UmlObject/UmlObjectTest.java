@@ -36,6 +36,10 @@ class UmlObjectTest {
 
     @Test
     void parseAttribute() {
+        String[] testAttributeArray = {"+testAttribute", "int"};
+        Map<String, Object> testMap = testClassUml.parseAttribute(testAttributeArray);
+        testMap.forEach((key, value) -> System.out.println("Key: " + key + ", Value: " + value));
+
     }
 
     @Test
