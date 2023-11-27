@@ -29,7 +29,7 @@ public class JavaFXTest extends Application {
         filePathLabel.setText("Selected File: ");
         filePathLabel.setPadding(new Insets(20));
 
-        // Setting for the textArea and gridpane
+        // Setting for the textArea and GridPane
         GridPane grid = new GridPane();
         Label input = new Label();
         Label output = new Label();
@@ -67,36 +67,44 @@ public class JavaFXTest extends Application {
         grid.add(radio, 0, 3, 2, 1);
 
         // Buttons for Saving and Running Program
-        Button generate = new Button();
-        Button save = new Button();
-        generate.setText("Load");
-        generate.setOnAction(e -> {
-            loadFile();
-        });
-        save.setText("Save");
+        Button load = new Button("Load");
+        Button save = new Button("Save");
+        Button generate = new Button("Generate");
+        Button openButton = new Button("Select UML file (.txt)");
+
+        // Settings for buttons colors and background
+        openButton.setTextFill(Paint.valueOf("White"));
+        openButton.setBackground(Background.fill(Paint.valueOf("Purple")));
         generate.setTextFill(Paint.valueOf("White"));
-        generate.setBackground(Background.fill(Paint.valueOf("Blue")));
+        generate.setBackground(Background.fill(Paint.valueOf("Green")));
         save.setTextFill(Paint.valueOf("White"));
         save.setBackground(Background.fill((Paint.valueOf("Red"))));
+        load.setTextFill(Paint.valueOf("White"));
+        load.setBackground(Background.fill(Paint.valueOf("Blue")));
+
+        // Show the file dialog when Open button is clicked
+        openButton.setOnAction(e -> {
+            openFile();
+        });
+
+        // display text file in input when load button pressed
+        load.setOnAction(e -> {
+            loadFile();
+        });
 
         // Set extension filters
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Text files (*.txt)", "*.txt");
         fileChooser.getExtensionFilters().add(extFilter);
 
-        // Show the file dialog when a button is clicked
-        javafx.scene.control.Button openButton = new javafx.scene.control.Button("Select UML file (.txt)");
-        openButton.setOnAction(e -> {
-            openFile();
-        });
 
         // horizontal box for the save generate and open file buttons
         HBox buttons = new HBox();
-        buttons.getChildren().addAll(openButton, generate, save);
-        buttons.setSpacing(20);
-        grid.add(buttons, 0, 5);
+        buttons.getChildren().addAll(openButton, load, generate, save);
+        buttons.setSpacing(50);
+        grid.add(buttons, 0, 5, 2, 1);
 
         // adding components to the main node
-        javafx.scene.layout.StackPane root = new javafx.scene.layout.StackPane();
+        StackPane root = new StackPane();
         root.getChildren().add(grid);
         primaryStage.setScene(new javafx.scene.Scene(root,800,800));
         primaryStage.show();
