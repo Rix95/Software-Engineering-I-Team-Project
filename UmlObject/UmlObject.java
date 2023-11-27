@@ -1,6 +1,7 @@
 package UmlObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,7 +30,7 @@ public class UmlObject {
     public ArrayList<Map<String, Object>> parseObject(String objectType, ArrayList<String> localClassStringArrayList) {
         //Might not be used...
         ArrayList<String> localClassString = new ArrayList<String>(localClassStringArrayList);
-        //Map<String, Object> localMap = new HashMap<>();
+
         ArrayList<Map<String, Object>> desiredOutput = new ArrayList<>();
         //unique case for outer comments
         if (objectType.equals("outer-comment")) {
@@ -39,10 +40,11 @@ public class UmlObject {
         }
         //class general...
         else if (objectType.equals("class")) {
-            for(String line : localClassStringArrayList){
-                desiredOutput.add(parseClass(line));
+            Map<String, Object> classMap = new HashMap<>();
+            classMap.put("className", localClassStringArrayList.get(0));
+            for (int i = 1; i < localClassStringArrayList.size(); i++){
+                desiredOutput.add(parseClass(localClassStringArrayList.get(i)));
             }
-
         }
 
         return desiredOutput;
@@ -65,7 +67,8 @@ public class UmlObject {
         //TODO Attribute & Method
         else {
             String[] sections = line.split(":");
-            char lastCharacter = sections[0].charAt(-1);
+            System.out.println(Arrays.toString(sections));
+            char lastCharacter = sections[0].charAt(sections[0].length() -1);
 
             //Method
 
@@ -103,10 +106,35 @@ public class UmlObject {
         return null ;
     }
 
-    public Map<String, Object> parseConstructor (String line) {
+    public String checkModifier(String attributeName) {
+        char firstChar = attributeName.charAt(0);
+        String modifier;
+        if (firstChar == '+'){
+    
+        }
+
+        else if(firstChar == '-') {
+        }
+        else if(firstChar == '#') {
+
+        }
+        else {
+        }
+
+        return
+    }
+
 
 
         return null;
+
+    }
+
+    public Map<String, Object> parseConstructor (String line) {
+        Map<String, Object> betaConstructor = new HashMap<>();
+        betaConstructor.put("Do Nothing", "Nothing");
+
+        return betaConstructor;
     }
 
     }

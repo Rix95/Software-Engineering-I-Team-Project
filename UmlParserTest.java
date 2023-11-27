@@ -39,8 +39,8 @@ class UmlParserTest {
     @Test
     void parseLines() {
         UmlParser testLines = new UmlParser(testString, "java");
-        //System.out.println(Arrays.toString(testLines.lineArray));
-       //System.out.println(testLines.umlObjectArray);
+        System.out.println(Arrays.toString(testLines.lineArray));
+        System.out.println(testLines.umlObjectArray);
 
 
         //assertArrayEquals(new String[]{"Line 1", "Line 2", "Line 3", "Line 4"}, testLines.lineArray);

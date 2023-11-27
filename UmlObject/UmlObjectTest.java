@@ -11,6 +11,10 @@ class UmlObjectTest {
 
     ArrayList<String>  testArray = new ArrayList<>(Arrays.asList("''", "Comment"));
     UmlObject testUml = new UmlObject(testArray, "outer-comment");
+    ArrayList<String>  testClassArray = new ArrayList<>(Arrays.asList("BattleshipGame", "-inputboard:ArrayList<ArrayList>",
+            "<<constructor>> BattleshipGame()"  ));
+    UmlObject testClassUml = new UmlObject(testArray, "class");
+
 
 
     @Test
@@ -20,6 +24,7 @@ class UmlObjectTest {
 
     @Test
     void parseClass() {
+        testClassUml.parseObject("class", testClassArray);
     }
 
     @Test
