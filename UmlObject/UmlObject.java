@@ -10,16 +10,15 @@ public class UmlObject {
     String objectType;
     ArrayList<String> umlObjectList;
     ArrayList<String> localClassStringArrayList;
-    public UmlObject(ArrayList<String> classStringArrayList, String type){
+
+    public UmlObject(ArrayList<String> classStringArrayList, String type) {
 
         this.localClassStringArrayList = classStringArrayList;
 
         //This will handle comments outside the class
-        if (type.equals("outer-comment")){
+        if (type.equals("outer-comment")) {
             objectType = "outer-comment";
-        }
-
-        else if (type.equals("class")) {
+        } else if (type.equals("class")) {
             objectType = "class";
         }
     }
@@ -39,7 +38,7 @@ public class UmlObject {
         }
         //class general...
         else if (objectType.equals("class")) {
-            for(String line : localClassStringArrayList){
+            for (String line : localClassStringArrayList) {
                 desiredOutput.add(parseClass(line));
             }
 
@@ -48,7 +47,7 @@ public class UmlObject {
         return desiredOutput;
     }
 
-    public Map<String, Object> parseComment (String comment) {
+    public Map<String, Object> parseComment(String comment) {
         String[] commentWithoutBacklash = comment.split("\\\\");
         Map<String, Object> localComment = new HashMap<>();
         localComment.put("comment", commentWithoutBacklash[1]);
@@ -59,22 +58,22 @@ public class UmlObject {
     }
 
 
-    public Map<String, Object> parseClass(String line){
+    public Map<String, Object> parseClass(String line) {
         //check if its a comment
         //if not it should be a method or attribute
         //split by :
         //TODO constructor (wont be implemented in second sprint)
+        return parseClass(line);
 
-
-        }
-
-
-
-
-        return localArrayList;
     }
-
-
-
-    return umlObjectList
 }
+//
+//
+//
+//        return localArrayList;
+//    }
+//
+//
+//
+//    return umlObjectList;
+//}
