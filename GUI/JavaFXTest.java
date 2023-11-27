@@ -79,7 +79,6 @@ public class JavaFXTest extends Application {
         save.setTextFill(Paint.valueOf("White"));
         save.setBackground(Background.fill((Paint.valueOf("Red"))));
 
-
         // Set extension filters
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Text files (*.txt)", "*.txt");
         fileChooser.getExtensionFilters().add(extFilter);
