@@ -1,32 +1,36 @@
+package UmlParser;
+
 import LanguageObjects.JavaObject;
 import LanguageObjects.LanguageObject;
-import LanguageObjects.PythonObject;
 import UmlObject.UmlObject;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class UmlParser {
     String languageChoice;
     String[] lineArray;
-    ArrayList<UmlObject> umlObjectArray;
-    LanguageObject[] languageObjectArray;
+    ArrayList<UmlObject> umlObjectList;
+    ArrayList<LanguageObject> languageObjectList;
 
     public UmlParser(String inputUml, String languageChoice){
         this.languageChoice = languageChoice;
         //Parse Input
         lineArray = parseInput(inputUml);
         //Parse Lines
-        umlObjectArray = parseLines(lineArray);
+        umlObjectList = parseLines(lineArray);
+        //Parse umlObjects
+        //TODO RIGHT NOW JAVA IS ALWAYYS SELECTED
+        languageObjectList = parseUmlObject(umlObjectList, "java");
+        System.out.println("///");
+        System.out.println(parseCodeIntoString());
+        System.out.println("///");
 
-        for (UmlObject umltest : umlObjectArray){
-            System.out.println(umltest);
-            for(String test2: umltest.localClassStringArrayList){
-                System.out.println(test2 + "sad");
-            }
-        }
+//        for (UmlObject umltest : umlObjectArray){
+//            System.out.println(umltest);
+//            for(String test2: umltest.localClassStringArrayList){
+//                System.out.println(test2 + "sad");
+//            }
+//        }
         //TODO Parse Uml,Language,Decode etc...
     }
 
@@ -109,17 +113,26 @@ public class UmlParser {
         return localUmlObjectArray;
     }
 
-    //TODO
-    public LanguageObject[] parseUmlObject(ArrayList<UmlObject> umlObjectArray, String languageChoice){
-        //TODO Based on Language
+    //TODO//    public LanguageObject[] parseUmlObject(ArrayList<UmlObject> umlObjectArray, String languageChoice){
+    ////        //TODO Based on Language
+    ////
+    ////        return null;
+    ////    }
 
-        return null;
-    }
 
-    public Object[] decodeLanguageObject(UmlObject[] umlObjectArray, String languageChoice){
+    public ArrayList<LanguageObject> parseUmlObject(ArrayList<UmlObject> umlObjectArray, String languageChoice){
+
         ArrayList<LanguageObject> languageObjectList = new ArrayList<>();
+        //UmlObject testUml = umlObjectArray.get(0);
+//        for (Map<String, Object> stringObjectMap : testUml.parsedObjectArrayList) {
+//            String classHeader = String.valueOf(new StringBuilder("public class" + " " + (String) stringObjectMap.get("className") + "{"));
+//            System.out.println(classHeader);
+//        }
+
+
         for(UmlObject umlObject : umlObjectArray){
             if (languageChoice.toLowerCase().equals("java")){
+
                 languageObjectList.add(new JavaObject(umlObject));
             }
             else if(languageChoice.toLowerCase().equals("python")){
@@ -127,8 +140,25 @@ public class UmlParser {
             }
         }
 
-        return null;
+        return languageObjectList;
     }
+
+    //TODO Cheesy name wont be in prod.. i promise
+    public String parseCodeIntoString() {
+        StringBuilder builderTest = new StringBuilder();
+
+        for(LanguageObject languageObject : languageObjectList){
+
+            //JavaObject actualLanguage = (JavaObject) languageObject;
+            //System.out.println("hello" + actualLanguage.getDesiredResult().toString());
+            String temp = String.join("\n", languageObject.getParsedEntity());
+            builderTest.append(temp + "\n");
+        }
+
+        return String.valueOf(builderTest);
+    }
+
+
 
 
 
