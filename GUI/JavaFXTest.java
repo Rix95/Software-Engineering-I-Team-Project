@@ -70,6 +70,7 @@ public class JavaFXTest extends Application {
         RadioButton java = new RadioButton("Java");
         python.setToggleGroup(radioButtons);
         java.setToggleGroup(radioButtons);
+        java.setSelected(true);
 
         // Adding radio buttons to the left side of the GUI
         radio.getChildren().addAll(python, java);
@@ -170,7 +171,7 @@ public class JavaFXTest extends Application {
 
         if (selectedSaveFile != null) {
             saveToFile(selectedSaveFile, outputTextArea.getText());
-            filePathLabel.setText("Selected File: " + selectedSaveFile.getAbsolutePath());
+            filePathLabel.setText("Saved at: " + selectedSaveFile.getAbsolutePath());
         }
     }
 

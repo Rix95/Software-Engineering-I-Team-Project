@@ -35,6 +35,7 @@ public class JavaObject extends LanguageObject {
                 String key = entry.getKey();
                 //System.out.println(key);
                 if (key.equals("attribute")){
+//                    System.out.println("attri time");
                     classElements.add(decodeAttribute(umlObject.parsedObjectArrayList.get(i).get(key)));
                 }
 
@@ -44,6 +45,8 @@ public class JavaObject extends LanguageObject {
                 }
 
                 else if (key.equals("method")){
+//                    System.out.println("method time");
+                    classElements.add(decodeMethod(umlObject.parsedObjectArrayList.get(i)));
 
                 }
             }
@@ -56,6 +59,7 @@ public class JavaObject extends LanguageObject {
 
 
     }
+
 
     public String decodeComment(Object comment){
         return String.valueOf(new StringBuilder("//" + comment.toString()));
@@ -80,9 +84,43 @@ public class JavaObject extends LanguageObject {
         attributeLine.append(" " +
                  attributeNewMap.get("name")+";");
 
-        attributeMap.toString();
+        //attributeMap.toString();
         return String.valueOf(attributeLine);
     }
+
+    private String decodeMethod(Object methodMap) {
+        Map<String, Object> mapOuter = (Map<String, Object>) methodMap;
+        StringBuilder methodLine = new StringBuilder();
+        Map<String, String> innerMap = (Map<String, String>) mapOuter.get("method");
+        Map<String, String> paramMap = (Map<String, String>) mapOuter.get("params");
+
+        //accessModifier
+        String accessModifier = (String) innerMap.get("accessModifier");
+        if (!accessModifier.equals("default")){
+            methodLine.append(accessModifier);
+        }
+
+        //TODO They will be written by default in java so no need to change
+        //type
+        methodLine.append(" " + innerMap.get("type"));
+
+        //name
+        methodLine.append(" " +
+                innerMap.get("name")+"(");
+        System.out.println(innerMap.get("name") + "NAME EREH");
+        for (Map.Entry<String, String> entry : paramMap.entrySet()) {
+            System.out.println(entry.getKey() + " " + entry.getValue());
+            methodLine.append(entry.getValue() + " " + entry.getKey() + ",");
+        }
+//        System.out.println(methodLine + "Helllo");
+
+        methodLine.setCharAt(methodLine.length() - 1, ')');
+        methodLine.append(";");
+
+//        attributeMap.toString();
+        return String.valueOf(methodLine);
+    }
+
 
     public ArrayList<String> getParsedEntity(){
         return decodedEntity;

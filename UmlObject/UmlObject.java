@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 //TODO Need to detect comments, class name, variables, methods, return type, access modifier, constructor, etc..
 public class UmlObject {
@@ -71,10 +73,22 @@ public class UmlObject {
         }
         //TODO Attribute & Method
         else {
-            String[] sections = line.split(":");
+            String[] sections;
+            //System.out.println("hey" + line);
+            if (line.contains("(")){
+               System.out.println(line + "Hey");
+                sections = line.split("\\):");
+                String addedClosure = String.valueOf(new StringBuilder(sections[0] + ")"));
+                sections[0] = addedClosure;
+                System.out.println("sections" + Arrays.toString(sections));
+
+            }
+            else {
+                sections = line.split(":");
+            }
             //System.out.println(Arrays.toString(sections));
             char lastCharacter = sections[0].charAt(sections[0].length() -1);
-
+            //System.out.println(lastCharacter + " " + sections);
             //Method
 
             if (lastCharacter == ')'){
@@ -99,7 +113,6 @@ public class UmlObject {
 
     public Map<String, Object> parseAttribute (String[] dividedLine) {
 
-        //Map<String, Map<String, String>> attributeMap = new HashMap<>();
         Map<String, Object> attributeMap = new HashMap<>();
         attributeMap.put("attribute", new HashMap<String, String>());
 
@@ -127,13 +140,83 @@ public class UmlObject {
         return attributeMap;
     }
     public Map<String, Object> parseMethod (String[] dividedLine) {
+        Map<String, Object> methodMap = new HashMap<>();
+        methodMap.put("method", new HashMap<String, String>());
+        Map<String, String> methodInnerMap = (Map<String, String>)methodMap.get("method");
+
+//        System.out.println("leftSIde" + dividedLine[0]);
+        String nameWithModifierAndParams = dividedLine[0];
+        Matcher leftSide = parseLeftSide(nameWithModifierAndParams);
+        String methodNameWithModifier = leftSide.group(1);
+        String contentInsideParentheses = leftSide.group(2);
+        //
+        methodMap.put("params", parseParams(contentInsideParentheses));
+        String returnType = dividedLine[1];
+
+        //Check modifier add to map
+        String accessModifier = checkModifier(methodNameWithModifier);
 
 
-        return null ;
+
+        methodInnerMap.put("accessModifier", accessModifier);
+
+        if (accessModifier.equals("default")){
+            methodInnerMap.put("name", methodNameWithModifier);
+        }
+        else {
+            String nameWithoutModifier = methodNameWithModifier.substring(1);
+            methodInnerMap.put("name", nameWithoutModifier);
+        }
+        methodInnerMap.put("type", returnType);
+
+        return methodMap;
     }
 
-    public String checkModifier(String attributeName) {
-        char firstChar = attributeName.charAt(0);
+    public Matcher parseLeftSide(String leftSide){
+
+        String input = "+method(param1:String,param2:double)";
+
+        // Define a regular expression pattern
+        String regex = "([\\+\\-#]*[a-zA-Z]+)\\(([^)]+)\\)";
+
+        // Compile the pattern
+        Pattern pattern = Pattern.compile(regex);
+
+        // Create a matcher object
+        Matcher matcher = pattern.matcher(input);
+
+        // Check if the pattern matches
+        if (matcher.matches()) {
+            // Extract method name and content inside parentheses
+            String methodName = matcher.group(1);
+            String contentInsideParentheses = matcher.group(2);
+
+            // Print the results
+            System.out.println("Method Name: " + methodName);
+            System.out.println("Content Inside Parentheses: " + contentInsideParentheses);
+        } else {
+            System.out.println("Pattern does not match the input string.");
+        }
+
+        return matcher;
+    }
+
+    public Map<String, String> parseParams(String params){
+        Map<String, String> paramMap = new HashMap<>();
+        String[] pairs = params.split(",");
+
+        for (String pair: pairs){
+            String[] parts = pair.split(":");
+            String attribute = parts[0].trim();
+            String type = parts[1].trim();
+
+            paramMap.put(attribute, type);
+        }
+        return paramMap;
+    }
+
+    public String checkModifier(String nameWithModifier) {
+        char firstChar = nameWithModifier.charAt(0);
 
         if (firstChar == '+'){
             return "public";
