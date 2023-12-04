@@ -107,7 +107,7 @@ public class JavaObject extends LanguageObject {
         //name
         methodLine.append(" " +
                 innerMap.get("name")+"(");
-        System.out.println(innerMap.get("name") + "NAME EREH");
+//        System.out.println(innerMap.get("name") + "NAME EREH");
         for (Map.Entry<String, String> entry : paramMap.entrySet()) {
             System.out.println(entry.getKey() + " " + entry.getValue());
             methodLine.append(entry.getValue() + " " + entry.getKey() + ",");

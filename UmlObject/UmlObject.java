@@ -174,7 +174,7 @@ public class UmlObject {
 
     public Matcher parseLeftSide(String leftSide){
 
-        String input = "+method(param1:String,param2:double)";
+        //String input = "+method(param1:String,param2:double)";
 
         // Define a regular expression pattern
         String regex = "([\\+\\-#]*[a-zA-Z]+)\\(([^)]+)\\)";
@@ -183,7 +183,7 @@ public class UmlObject {
         Pattern pattern = Pattern.compile(regex);
 
         // Create a matcher object
-        Matcher matcher = pattern.matcher(input);
+        Matcher matcher = pattern.matcher(leftSide);
 
         // Check if the pattern matches
         if (matcher.matches()) {
