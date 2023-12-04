@@ -19,8 +19,6 @@ On the bottom, there are four buttons for the user to interact with. All are str
 ---
 
 
-Time spent: **3** hours spent in total
-
 ## Required Features
 
 
