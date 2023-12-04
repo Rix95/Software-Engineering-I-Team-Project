@@ -1,11 +1,28 @@
 # UML to Source Code  - 
 Submitted by: **Ricardo Elizondo, Alexandria Knox, Ben Underdahl**
 
-Project Description: NEEDS TO BE FILLED
+## Project Description:
+    
+This project consists of a program that converts UML code into source code of the choosen language. User can either upload a previously made .txt file or start from stratch within the actualy program itself. The program serves as a tool to help save time on coverting UML into source code that can be both read and save within a computer file.
+
+The program consists of two windows, one for the UML code and the other for the converted code result. The window on the left serves as the input for UML code and can be interacted with by the user to change any attributes or details of the code. The window on the right serves as an output window that displays the converted code for the user to see.
+
+Under the left window will be the file directory to where where the uploaded code is located.
+
+On the bottom, there are four buttons for the user to interact with. All are straight forward in their functionality and serve as the main functions to the program.
+   
+   
+   Above these four buttons are 2 radio buttons that have the names "Java" and "Python". When either or are selected, the coverented UML code with be written in the chosen language. Presently, the only language available for this program will be Java.
+   
+
+
+---
+
 
 Time spent: **3** hours spent in total
 
 ## Required Features
+
 
 The following **required** functionality is completed:
 
@@ -47,5 +64,4 @@ class anotherClass
 4. Click the "Generate" button. 
 5. Once clicked, the program with instanstly generate the Selected programming language code
 6. When code is generated, click the "Save" button 
-
 
