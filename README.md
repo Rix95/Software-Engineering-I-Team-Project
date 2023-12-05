@@ -52,7 +52,9 @@ class TestClass {
 +method(param1:float,param2:String):void
 }
 
-class anotherClass
+class anotherClass {
+
+}
 
 
 @enduml
